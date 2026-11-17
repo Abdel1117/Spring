@@ -3,9 +3,9 @@ package com.dyma.Tennis.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dyma.Tennis.ApplicationStatus;
+import com.dyma.Tennis.HealthCheck;
 import com.dyma.Tennis.repository.HealthCheckRepository;
-import com.dyma.Tennis.web.ApplicationStatus;
-import com.dyma.Tennis.web.HealthCheck;
 
 @Service
 public class HealthCheckService {

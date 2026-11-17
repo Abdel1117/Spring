@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 import java.util.Collections;
 import java.util.List;
@@ -54,7 +55,7 @@ public class PlayerController {
     @ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Created  Player ", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = Player.class)) }) })
     @PostMapping
-    public Player createPlayer(@RequestBody Player player) {
+    public Player createPlayer(@RequestBody @Valid Player player) {
         return player;
     }
 
@@ -62,7 +63,7 @@ public class PlayerController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Updated  Player", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = Player.class)) }) })
     @PutMapping
-    public Player updatePlayer(@RequestBody Player player) {
+    public Player updatePlayer(@RequestBody @Valid Player player) {
         return player;
     }
 

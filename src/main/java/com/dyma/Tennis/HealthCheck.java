@@ -1,4 +1,4 @@
-package com.dyma.Tennis.web;
+package com.dyma.Tennis;
 
 public record HealthCheck(ApplicationStatus status, String message) {
 }
