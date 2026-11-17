@@ -2,6 +2,9 @@ package com.dyma.Tennis.web;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dyma.Tennis.Player;
+import com.dyma.Tennis.PlayerList;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -30,17 +33,21 @@ public class PlayerController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Players list", content = {
             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Player.class))) }) })
 
+    @GetMapping
     public List<Player> list() {
-        return Collections.emptyList();
+        return PlayerList.ALL;
     }
 
     @Operation(summary = "Finds a players ", description = "Finds a player ")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Player ", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = Player.class)) }) })
 
-    @GetMapping("{lastname}")
-    public Player getByNamePlayer(@PathVariable("lastName") String param) {
-        return new Player();
+    @GetMapping("{lastName}")
+    public Player getByNamePlayer(@PathVariable("lastName") String lastName) {
+        return PlayerList.ALL.stream()
+                .filter(player -> player.lastName().equals(lastName))
+                .findFirst()
+                .orElse(null);
     }
 
     @Operation(summary = "Create a player ", description = "Create a player ")

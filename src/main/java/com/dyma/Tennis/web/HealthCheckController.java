@@ -1,5 +1,6 @@
 package com.dyma.Tennis.web;
 
+import com.dyma.Tennis.HealthCheck;
 import com.dyma.Tennis.services.HealthCheckService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
