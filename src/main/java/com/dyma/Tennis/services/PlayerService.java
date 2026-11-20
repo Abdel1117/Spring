@@ -4,20 +4,30 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dyma.Tennis.Player;
 import com.dyma.Tennis.PlayerList;
 import com.dyma.Tennis.PlayerNotFoundException;
 import com.dyma.Tennis.PlayerToSave;
+import com.dyma.Tennis.Rank;
 import com.dyma.Tennis.PlayerToSave;
 import com.dyma.Tennis.RankingCalculator;
+import com.dyma.Tennis.data.PlayerRepository;
 
 @Service
 public class PlayerService {
 
+    @Autowired
+    private PlayerRepository playerRepository;
+
     public List<Player> getAllPlayers() {
-        return PlayerList.ALL.stream()
+        return playerRepository.findAll().stream()
+                .map(playerEntity -> new Player(playerEntity.getFirstName(),
+                        playerEntity.getLastName(),
+                        playerEntity.getBirthDate(),
+                        new Rank(playerEntity.getRank(), playerEntity.getPoints())))
                 .sorted(Comparator.comparing(player -> player.rank().position()))
                 .collect(Collectors.toList());
     }

@@ -1,4 +1,4 @@
-package com.dyma.Tennis.repository;
+package com.dyma.Tennis.data;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

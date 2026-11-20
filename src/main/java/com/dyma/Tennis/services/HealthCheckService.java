@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.dyma.Tennis.ApplicationStatus;
 import com.dyma.Tennis.HealthCheck;
-import com.dyma.Tennis.repository.HealthCheckRepository;
+import com.dyma.Tennis.data.HealthCheckRepository;
 
 @Service
 public class HealthCheckService {

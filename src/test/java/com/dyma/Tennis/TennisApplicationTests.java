@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.dyma.Tennis.repository.HealthCheckRepository;
+import com.dyma.Tennis.data.HealthCheckRepository;
 import com.dyma.Tennis.services.HealthCheckService;
 import com.dyma.Tennis.web.HealthCheckController;
 
