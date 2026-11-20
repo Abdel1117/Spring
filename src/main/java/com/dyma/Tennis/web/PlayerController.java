@@ -4,7 +4,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dyma.Tennis.Player;
 import com.dyma.Tennis.PlayerList;
-import com.dyma.Tennis.PlayerToRegister;
+import com.dyma.Tennis.PlayerToSave;
+import com.dyma.Tennis.PlayerToSave;
 import com.dyma.Tennis.services.PlayerService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -61,23 +62,30 @@ public class PlayerController {
         @ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Created  Player ", content = {
                         @Content(mediaType = "application/json", schema = @Schema(implementation = Player.class)) }) })
         @PostMapping
-        public Player createPlayer(@RequestBody @Valid PlayerToRegister playerToRegister) {
-                return playerService.create(playerToRegister);
+        public Player createPlayer(@RequestBody @Valid PlayerToSave playerToSave) {
+                return playerService.create(playerToSave);
 
         }
 
         @Operation(summary = "Update a player", description = "Update a player")
         @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Updated  Player", content = {
                         @Content(mediaType = "application/json", schema = @Schema(implementation = Player.class)) }) })
+        @ApiResponse(responseCode = "404", description = "A player with the specified last name was not found", content = {
+                        @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class)) })
         @PutMapping
-        public Player updatePlayer(@RequestBody @Valid Player player) {
-                return player;
+        public Player updatePlayer(@RequestBody @Valid PlayerToSave playerToSave) {
+                return playerService.update(playerToSave);
         }
 
         @Operation(summary = "Delete a player", description = "Delete a player")
         @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "PLayer has been deleted", content = {
                         @Content(mediaType = "application/json", schema = @Schema(implementation = Player.class)) }) })
+        @ApiResponse(responseCode = "404", description = "A player with the specified last name was not found", content = {
+                        @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class)) })
+
         @DeleteMapping("{lastName}")
         public void deletePlayerByLastName(@PathVariable("lastName") String lastName) {
+
+                playerService.delete(lastName);
         }
 }
