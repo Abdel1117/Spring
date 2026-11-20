@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dyma.Tennis.Player;
 import com.dyma.Tennis.PlayerList;
+import com.dyma.Tennis.PlayerToRegister;
 import com.dyma.Tennis.services.PlayerService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,8 +61,9 @@ public class PlayerController {
         @ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Created  Player ", content = {
                         @Content(mediaType = "application/json", schema = @Schema(implementation = Player.class)) }) })
         @PostMapping
-        public Player createPlayer(@RequestBody @Valid Player player) {
-                return player;
+        public Player createPlayer(@RequestBody @Valid PlayerToRegister playerToRegister) {
+                return playerService.create(playerToRegister);
+
         }
 
         @Operation(summary = "Update a player", description = "Update a player")

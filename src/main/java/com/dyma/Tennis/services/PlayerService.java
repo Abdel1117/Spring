@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.dyma.Tennis.Player;
 import com.dyma.Tennis.PlayerList;
 import com.dyma.Tennis.PlayerNotFoundException;
+import com.dyma.Tennis.PlayerToRegister;
+import com.dyma.Tennis.RankingCalculator;
 
 @Service
 public class PlayerService {
@@ -24,5 +26,15 @@ public class PlayerService {
                 .filter(player -> player.lastName().equals(lastName))
                 .findFirst()
                 .orElseThrow(() -> new PlayerNotFoundException(lastName));
+    }
+
+    public Player create(PlayerToRegister playerToRegister) {
+        RankingCalculator rankingCalculator = new RankingCalculator(PlayerList.ALL, playerToRegister);
+
+        List<Player> players = rankingCalculator.getNewPlayersRanking();
+
+        return players.stream()
+                .filter(player -> player.lastName().equals(playerToRegister.lastName()))
+                .findFirst().get();
     }
 }
