@@ -58,14 +58,20 @@ public class PlayerController {
                 return playerService.getByLastName(lastName);
         }
 
-        @Operation(summary = "Create a player ", description = "Create a player ")
-        @ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Created  Player ", content = {
-                        @Content(mediaType = "application/json", schema = @Schema(implementation = Player.class)) }) })
-        @PostMapping
-        public Player createPlayer(@RequestBody @Valid PlayerToSave playerToSave) {
-                return playerService.create(playerToSave);
+    @Operation(summary = "Creates a player", description = "Creates a player")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Created player",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = PlayerToSave.class))}),
+            @ApiResponse(responseCode = "400", description = "Player with specified last name already exists.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Error.class))})
 
-        }
+    })
+    @PostMapping
+    public Player createPlayer(@RequestBody @Valid PlayerToSave playerToSave) {
+        return playerService.create(playerToSave);
+    }
 
         @Operation(summary = "Update a player", description = "Update a player")
         @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Updated  Player", content = {

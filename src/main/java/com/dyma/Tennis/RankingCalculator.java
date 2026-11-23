@@ -1,50 +1,36 @@
 package com.dyma.Tennis;
 
+import com.dyma.Tennis.data.PlayerEntity;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class RankingCalculator {
 
-    private final List<Player> currentPlayersRanking;
+    private final List<PlayerEntity> currentPlayersRanking;
     private final PlayerToSave playerToSave;
 
-    public RankingCalculator(List<Player> currentPlayersRanking, PlayerToSave playerToSave) {
+    public RankingCalculator(List<PlayerEntity> currentPlayersRanking, PlayerToSave playerToSave) {
         this.currentPlayersRanking = currentPlayersRanking;
         this.playerToSave = playerToSave;
     }
 
-    public RankingCalculator(List<Player> currentPlayersRanking) {
+    public RankingCalculator(List<PlayerEntity> currentPlayersRanking) {
         this.currentPlayersRanking = currentPlayersRanking;
         this.playerToSave = null;
     }
 
-    public List<Player> getNewPlayersRanking() {
-        List<Player> newRankingList = new ArrayList<>(currentPlayersRanking);
-        if (playerToSave != null) {
+    public List<PlayerEntity> getNewPlayersRanking() {
+        currentPlayersRanking.sort((player1, player2) -> Integer.compare(player2.getPoints(), player1.getPoints()));
+        List<PlayerEntity> updatedPlayers = new ArrayList<>();
 
-            newRankingList.add(new Player(
-                    playerToSave.firstName(),
-                    playerToSave.lastName(),
-                    playerToSave.birthDate(),
-                    new Rank(999999999, playerToSave.points())));
-        }
+        for(int i = 0; i < currentPlayersRanking.size(); i++){
+            PlayerEntity updatedPlayer = currentPlayersRanking.get(i);
 
-        newRankingList.sort((player1, player2) -> Integer.compare(player2.rank().points(), player1.rank().points()));
-
-        List<Player> updatedPlayers = new ArrayList<>();
-
-        for (int i = 0; i < newRankingList.size(); i++) {
-            Player player = newRankingList.get(i);
-            Player updatedPlayer = new Player(
-                    player.firstName(),
-                    player.lastName(),
-                    player.birthDate(),
-                    new Rank(i + 1, player.rank().points()));
+            updatedPlayer.setRank(i + 1);
             updatedPlayers.add(updatedPlayer);
         }
-
-        PlayerList.ALL = updatedPlayers;
         return updatedPlayers;
     }
 }
