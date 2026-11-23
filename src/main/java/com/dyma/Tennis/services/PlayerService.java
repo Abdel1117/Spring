@@ -2,15 +2,16 @@ package com.dyma.Tennis.services;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.dyma.Tennis.data.PlayerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dyma.Tennis.Player;
 import com.dyma.Tennis.PlayerList;
 import com.dyma.Tennis.PlayerNotFoundException;
-import com.dyma.Tennis.PlayerToSave;
 import com.dyma.Tennis.Rank;
 import com.dyma.Tennis.PlayerToSave;
 import com.dyma.Tennis.RankingCalculator;
@@ -24,7 +25,8 @@ public class PlayerService {
 
     public List<Player> getAllPlayers() {
         return playerRepository.findAll().stream()
-                .map(playerEntity -> new Player(playerEntity.getFirstName(),
+                .map(playerEntity -> new Player(
+                        playerEntity.getFirstName(),
                         playerEntity.getLastName(),
                         playerEntity.getBirthDate(),
                         new Rank(playerEntity.getRank(), playerEntity.getPoints())))
@@ -33,10 +35,17 @@ public class PlayerService {
     }
 
     public Player getByLastName(String lastName) {
-        return PlayerList.ALL.stream()
-                .filter(player -> player.lastName().equals(lastName))
-                .findFirst()
-                .orElseThrow(() -> new PlayerNotFoundException(lastName));
+
+        Optional<PlayerEntity> player = playerRepository.findOneByLastNameIgnoreCase(lastName);
+        if(player.isEmpty()){
+            throw new PlayerNotFoundException((lastName));
+        }
+        PlayerEntity playerEntity = player.get();
+        return new Player(
+                playerEntity.getFirstName(),
+                playerEntity.getLastName(),
+                playerEntity.getBirthDate(),
+                new Rank(playerEntity.getRank(), playerEntity.getPoints()));
     }
 
     public Player create(PlayerToSave playerToSave) {
