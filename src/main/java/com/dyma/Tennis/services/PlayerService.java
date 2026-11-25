@@ -73,7 +73,7 @@ public class PlayerService {
 
     public Player update(PlayerToSave playerToSave) {
         Optional<PlayerEntity> playerToUpdate = playerRepository.findOneByLastNameIgnoreCase(playerToSave.lastName());
-        if(playerToUpdate.isEmpty()){
+            if(playerToUpdate.isEmpty()){
             throw new PlayerNotFoundException(playerToSave.lastName());
         }
         playerToUpdate.get().setFirstName(playerToSave.firstName());
@@ -91,13 +91,17 @@ public class PlayerService {
     }
 
     public void delete(String lastName) {
+        Optional <PlayerEntity> playerToDelete = playerRepository.findOneByLastNameIgnoreCase(lastName);
 
-//        Player playerToDelete = getByLastName(lastName);
-//        PlayerList.ALL = PlayerList.ALL.stream()
-//                .filter(player -> !player.lastName().equals(playerToDelete.lastName()))
-//                .toList();
-//        RankingCalculator rankingCalculator = new RankingCalculator(PlayerList.ALL);
-//        rankingCalculator.getNewPlayersRanking();
+        if(playerToDelete.isEmpty()){
+            throw new PlayerNotFoundException(lastName);
+        }
+
+        playerRepository.delete(playerToDelete.get());
+
+        RankingCalculator rankingCalculator = new RankingCalculator(playerRepository.findAll());
+        List<PlayerEntity> newRanking = rankingCalculator.getNewPlayersRanking();
+        playerRepository.saveAll(newRanking);
     }
 
 }
