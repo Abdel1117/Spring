@@ -54,7 +54,7 @@ public class PlayerController {
                                         @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class)) })
         })
         @GetMapping("{lastName}")
-        public Player getByLastName(@PathVariable("lastName") String lastName) {
+        public Player getByLastName(@PathVariable("lastName") String  lastName) {
                 return playerService.getByLastName(lastName);
         }
 
